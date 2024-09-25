@@ -1,8 +1,13 @@
+
 spring:
+  security:
+    user:
+      name: admin
+      password: admin
   datasource:
     url: jdbc:postgresql://localhost:5432/turamyzba
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    username: postgres
+    password: Codemedy175A369_
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

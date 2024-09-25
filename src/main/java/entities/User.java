@@ -10,17 +10,19 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String fullName;
     private String username;
@@ -28,12 +30,16 @@ public class User implements UserDetails {
     private String email;
     private String phoneNumber;
 
+
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @ElementCollection(fetch = FetchType.LAZY)
+    private Set<Role> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return new HashSet<>(){{
+            add(new SimpleGrantedAuthority("ROLE_" + roles));
+        }};
     }
 
     @Override
